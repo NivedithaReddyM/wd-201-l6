@@ -11,13 +11,17 @@ app.use(express.static(path.join(__dirname + "/public")));
 // app.use(express.static("public"));
 
 app.get("/", async (req, res) => {
-  const allTodos = await Todo.findAll();
+  try{
+    const allTodos = await Todo.findAll();
   if (req.accepts("html")) {
     res.render("index", {
       allTodos,
     });
   } else {
     res.json(allTodos);
+  }}
+  catch(error){
+    console.log(error);
   }
 });
 
