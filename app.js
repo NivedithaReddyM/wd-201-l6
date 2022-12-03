@@ -10,30 +10,34 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname + "/public")));
 // app.use(express.static("public"));
 
-app.get("/", async (req, res) => {
-  try{
-    const allTodos = await Todo.findAll();
-  if (req.accepts("html")) {
-    res.render("index", {
-      allTodos,
+app.get("/", async (request, response)=>{
+  // response.send("Hello World");
+  const allTodosAre = await Todo.findAll();
+  console.log(allTodosAre);
+  if (request.accepts("html")) {
+    response.render("index", {
+      allTodosAre,
     });
   } else {
-    res.json(allTodos);
-  }}
-  catch(error){
-    console.log(error);
+    response.json(allTodosAre);
   }
 });
 
-app.get("/todos", async (req, res) => {
+app.get("/todos", async function (_request, response) {
+  console.log("Processing list of all Todos are ........");
+  // FILL IN YOUR CODE HERE
   try {
-    const todos = await Todo.findAll({ order: [["id", "ASC"]] });
-    return res.json(todos);
+    const todo = await Todo.findAll();
+    return response.send(todo);
   } catch (error) {
     console.log(error);
-    return res.status(422).json(error);
+    return response.status(422).json(error);
   }
+  // First, we have to query our PostgerSQL database using Sequelize to get list of all Todos.
+  // Then, we have to respond with all Todos, like:
+  // response.send(todos)
 });
+
 
 app.post("/todos", async (req, res) => {
   console.log("Body : ", req.body);
