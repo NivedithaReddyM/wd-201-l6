@@ -22,6 +22,7 @@ const { Todo } = require("./models");
 app.set("view engine", "ejs");
 
 app.get("/", async (request, response) => {
+  try{
   const allTodosAre = await Todo.getAllTodos();  
   const completedItemsIs = await Todo.completedItemsAre();
   const overdue = await Todo.overdue();
@@ -40,40 +41,43 @@ app.get("/", async (request, response) => {
   } else {
     response.json({overdue, dueLater, dueToday, completedItemsIs});
   }
+}
+catch(error){
+  console.log(error);
+}});
+
+app.get("/todos", async (request, response) => {
+  // defining route to displaying message
+  console.log("Displaying Todo list");
+  try {
+    const todoslist = await Todo.findAll();
+    return response.json(todoslist);
+  } catch (error) {
+    console.log(error);
+    return response.status(422).json(error);
+  }
 });
 
-// app.get("/todos", async (request, response) => {
-//   // defining route to displaying message
-//   console.log("Todo list");
-//   try {
-//     const todoslist = await Todo.findAll();
-//     return response.json(todoslist);
-//   } catch (error) {
-//     console.log(error);
-//     return response.status(422).json(error);
-//   }
-// });
-
-// app.get("/todos/:id", async function (request, response) {
-//   try {
-//     const todo = await Todo.findByPk(request.params.id);
-//     return response.json(todo);
-//   } catch (error) {
-//     console.log(error);
-//     return response.status(422).json(error);
-//   }
-// });
+app.get("/todos/:id", async function (request, response) {
+  try {
+    const todo = await Todo.findByPk(request.params.id);
+    return response.json(todo);
+  } catch (error) {
+    console.log(error);
+    return response.status(422).json(error);
+  }
+});
 
 app.post("/todos", async (request, response) => {
-  // console.log("creating new todo", request.body);
+  console.log("creating new todo", request.body);
   try {
-    // eslint-disable-next-line no-unused-vars
+   
       await Todo.addaTodo({
       title: request.body.title,
       dueDate: request.body.dueDate,
       completed: false,
     });
-    //redirect to the root URL
+   
     return response.redirect("/");
   } catch (err1) {
     console.log(err1);
@@ -93,7 +97,7 @@ app.put("/todos/:id", async (request, response) => {
   }
 });
 app.delete("/todos/:id", async (request, response) => {
-  console.log("Deleting a todo with a particular id..", request.params.id);
+  console.log("Deleting a todo-item with a particular id..", request.params.id);
   try {
     await Todo.remove(request.params.id);
     return response.json({ success: true });
