@@ -1,9 +1,8 @@
 body {
-font-family:'Times New Roman', Times, serif;
-background: #ffcba4;
-color: rgb(0, 0, 0);
+  background-color: #FFDAB9;
+  font-family: 'Times New Roman', Times, serif;
 }
 
-.Todo-Item:hover .trash-icon{
-  display:block;
+.Todo-Item:hover .trash-icon {
+  display: block;
 }

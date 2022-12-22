@@ -2,20 +2,19 @@
   "development": {
     "username": "postgres",
     "password": "Chikku@0804",
-    "database": "database_development",
+    "database": "wd-201-l10-test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
     "password": "Chikku@0804",
-    "database": "database_test ",
+    "database": "wd-201-l10-test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
-    
-    "dialect": "postgres",
-    "use_env_variable":"DATABASE_URL"
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres"
   }
 }
